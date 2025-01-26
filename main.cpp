@@ -1,74 +1,24 @@
-#include <iostream>
-#include <vector>
-#include <ctime>
-#include <cstdlib>
-
-using namespace std;
-
-enum Move {
-    U, Up, U2, D, Dp, D2, L, Lp, L2, R, Rp, R2, F, Fp, F2, B, Bp, B2,
-    Uw, Uwp, Uw2, Dw, Dwp, Dw2, Lw, Lwp, Lw2, Rw, Rwp, Rw2, Fw, Fwp, Fw2, Bw, Bwp, Bw2
-};
-
-const char* moveNames[] = {
-    "U", "U'", "U2", "D", "D'", "D2", "L", "L'", "L2", "R", "R'", "R2", "F", "F'", "F2", "B", "B'", "B2",
-    "Uw", "Uw'", "Uw2", "Dw", "Dw'", "Dw2", "Lw", "Lw'", "Lw2", "Rw", "Rw'", "Rw2", "Fw", "Fw'", "Fw2", "Bw", "Bw'", "Bw2"
-};
-
-int getFace(Move move) {
-    if (move <= B2) return move / 3; // U, D, L, R, F, B
-    return (move - Uw) / 3; // Uw, Dw, Lw, Rw, Fw, Bw
-}
-
-Move getRandomMove(Move lastMove, int maxMove) {
-    Move newMove;
+char choice;
     do {
-        newMove = static_cast<Move>(rand() % maxMove);
-    } while (getFace(newMove) == getFace(lastMove) || getFace(newMove) == (getFace(lastMove) ^ 1)); // Check if the move is the same or opposite face
-    return newMove;
-}
+        int cubeSize;
+        cout << "Choose cube size for scramble (2 for 2x2, 3 for 3x3, 4 for 4x4): ";
+        cin >> cubeSize;
 
-void generateScramble(int numMoves, int maxMove) {
-    vector<Move> scramble;
-    Move lastMove = static_cast<Move>(rand() % maxMove);
-    scramble.push_back(lastMove);
+        switch (cubeSize) {
+            case 2:
+                generateScramble(20, 18); // 2x2 uses 18 moves (U, D, L, R, F, B and their variations)
+                break;
+            case 3:
+                generateScramble(20, 18); // 3x3 uses 18 moves (U, D, L, R, F, B and their variations)
+                break;
+            case 4:
+                generateScramble(40, 36); // 4x4 uses 36 moves (U, D, L, R, F, B, Uw, Dw, Lw, Rw, Fw, Bw and their variations)
+                break;
+            default:
+                cout << "Invalid choice!" << endl;
+                break;
+        }
 
-    // Generate the scramble ensuring no consecutive or opposite face moves
-    for (int i = 1; i < numMoves; ++i) {
-        Move newMove = getRandomMove(lastMove, maxMove);
-        scramble.push_back(newMove);
-        lastMove = newMove;
-    }
-
-    // Output the scramble
-    cout << "Scramble: ";
-    for (Move move : scramble) {
-        cout << moveNames[move] << " ";
-    }
-    cout << endl;
-}
-
-int main() {
-    srand(time(0)); // Seed the random number generator
-
-    int choice;
-    cout << "Choose cube size for scramble (2 for 2x2, 3 for 3x3, 4 for 4x4): ";
-    cin >> choice;
-
-    switch (choice) {
-        case 2:
-            generateScramble(20, 18); // 2x2 uses 18 moves (U, D, L, R, F, B and their variations)
-            break;
-        case 3:
-            generateScramble(20, 18); // 3x3 uses 18 moves (U, D, L, R, F, B and their variations)
-            break;
-        case 4:
-            generateScramble(40, 36); // 4x4 uses 36 moves (U, D, L, R, F, B, Uw, Dw, Lw, Rw, Fw, Bw and their variations)
-            break;
-        default:
-            cout << "Invalid choice!" << endl;
-            break;
-    }
-
-    return 0;
-}
+        cout << "Press 'q' to quit or any other key to generate another scramble: ";
+        cin >> choice;
+    } while (choice != 'q');
