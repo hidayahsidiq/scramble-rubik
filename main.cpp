@@ -2,6 +2,7 @@
 #include <vector>
 #include <ctime>
 #include <cstdlib>
+#include <conio.h> // For _getch()
 
 using namespace std;
 
@@ -49,12 +50,12 @@ void generateScramble(int numMoves, int maxMove) {
 }
 
 int main() {
-    srand(time(0)); // Seed the random number generator
+    srand(static_cast<unsigned int>(time(0))); // Seed the random number generator
 
     char choice;
+    int cubeSize;
     do {
-        int cubeSize;
-        cout << "Choose cube size for scramble (2 for 2x2, 3 for 3x3, 4 for 4x4): ";
+        cout << "Please select size cube to scramble (2 for 2x2, 3 for 3x3, 4 for 4x4, 5 for 5x5): ";
         cin >> cubeSize;
 
         switch (cubeSize) {
@@ -65,15 +66,25 @@ int main() {
                 generateScramble(20, 18); // 3x3 uses 18 moves (U, D, L, R, F, B and their variations)
                 break;
             case 4:
-                generateScramble(40, 36); // 4x4 uses 36 moves (U, D, L, R, F, B, Uw, Dw, Lw, Rw, Fw, Bw and their variations)
+                generateScramble(40, 40); // 4x4 uses 36 moves (U, D, L, R, F, B, Uw, Dw, Lw, Rw, Fw, Bw and their variations)
+                break;
+            case 5:
+                generateScramble(60, 36); // 5x5 uses 36 moves (U, D, L, R, F, B, Uw, Dw, Lw, Rw, Fw, Bw and their variations)
                 break;
             default:
                 cout << "Invalid choice!" << endl;
-                break;
+                continue;
         }
 
-        cout << "Press 'q' to quit or any other key to generate another scramble: ";
-        cin >> choice;
+        cout << "Press 'space' to generate a new scramble, 'Enter' to select another scramble, 'q' to quit: ";
+        choice = _getch();
+
+        while (choice == ' ') {
+            generateScramble((cubeSize == 2 || cubeSize == 3) ? 20 : (cubeSize == 4) ? 40 : 60, (cubeSize == 2 || cubeSize == 3) ? 18 : 36);
+            cout << "Press 'space' to generate a new scramble, 'Enter' to select another scramble, 'q' to quit: ";
+            choice = _getch();
+        }
+
     } while (choice != 'q');
 
     return 0;
