@@ -66,7 +66,7 @@ int main() {
                 generateScramble(20, 18); // 3x3 uses 18 moves (U, D, L, R, F, B and their variations)
                 break;
             case 4:
-                generateScramble(40, 40); // 4x4 uses 36 moves (U, D, L, R, F, B, Uw, Dw, Lw, Rw, Fw, Bw and their variations)
+                generateScramble(40, 36); // 4x4 uses 36 moves (U, D, L, R, F, B, Uw, Dw, Lw, Rw, Fw, Bw and their variations)
                 break;
             case 5:
                 generateScramble(60, 36); // 5x5 uses 36 moves (U, D, L, R, F, B, Uw, Dw, Lw, Rw, Fw, Bw and their variations)
