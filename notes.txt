@@ -1,2 +1,1 @@
-this scramble rubiks for 2x2, 3x3 and 4x4 was programming with c++ 
-update with 5x5
+this scramble rubik 3x3 in gtkmm 4.0 c++
