@@ -1,33 +1,41 @@
-#pragma once
+#ifndef STOPWATCHWINDOW_H
+#define STOPWATCHWINDOW_H
 
 #include <gtkmm.h>
 #include <chrono>
-#include <thread>
-#include <atomic>
 #include <vector>
-#include <string>
 
 class StopwatchWindow : public Gtk::Window {
 public:
     StopwatchWindow();
-    ~StopwatchWindow();
+    virtual ~StopwatchWindow();
 
 protected:
-    void generate_scramble();
+    // Signal Handlers
     bool on_key_pressed(guint keyval, guint keycode, Gdk::ModifierType state);
     void on_reset_button_clicked();
+    void on_scramble_selector_changed();
     bool update_timer_label();
+
+    // Helper
+    void generate_scramble();
 
 private:
     Gtk::Box m_main_box{Gtk::Orientation::VERTICAL};
     Gtk::Label m_scramble_label;
     Gtk::Label m_timer_label;
     Gtk::Button m_reset_button;
-    Glib::RefPtr<Gtk::EventControllerKey> m_key_controller;
+    Gtk::ComboBoxText m_scramble_selector;
 
-    std::atomic<bool> m_running;
+    Glib::RefPtr<Gtk::EventControllerKey> m_key_controller;
+    sigc::connection m_timer_connection;
+
+    bool m_running;
     std::chrono::steady_clock::time_point m_start_time;
     std::chrono::milliseconds m_elapsed{0};
 
-    sigc::connection m_timer_connection;
+    enum class CubeType { TwoByTwo, ThreeByThree, FourByFour, FiveByFive };
+    CubeType m_selected_cube_type = CubeType::ThreeByThree;
 };
+
+#endif // STOPWATCHWINDOW_H
