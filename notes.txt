@@ -1,1 +1,2 @@
 this scramble rubik 3x3 in gtkmm 4.0 c++
+update 28 April 2025, tambahan drop down list untuk memilih scramble
